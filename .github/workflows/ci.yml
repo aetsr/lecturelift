@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show toolchain
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+      - name: Build (debug)
+        run: swift build
+      - name: Test
+        run: swift test
+      - name: Build app bundle + DMG (ad-hoc signed, without the optional denoiser)
+        run: ./scripts/build.sh || (sleep 10 && ./scripts/build.sh)   # hdiutil is occasionally "busy" on hosted runners
+      - name: Check bundle contents (string tables, notices)
+        run: |
+          test -d build/LectureLift.app/Contents/Resources/en.lproj
+          test -d build/LectureLift.app/Contents/Resources/de.lproj
+          test -f build/LectureLift.app/Contents/Resources/THIRD_PARTY_NOTICES.md
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: LectureLift-dmg
+          path: build/LectureLift.dmg
+          if-no-files-found: error

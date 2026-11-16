@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+# build output
+.build/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+spike/out/
+# Rust / libDF build (scripts/build_libdf.sh)
+vendor/libdf/target/
+vendor/libdf/src/
+vendor/libdf/*.xcframework/
+**/target/
+# downloaded corpora and generated audio (never committed)
+TestCorpus/.cache/
+eval/**/*.wav
+eval/**/*.aif
+eval/**/*.aiff
+eval/**/*.flac
+eval/**/*.mp3
+eval/**/*.m4a
+eval/**/*.caf
+eval/real/
+eval/listening/
+*.wav
+resume.log
+.resume/
+vendor/libdf/lib/
+vendor/libdf/models/
+vendor/libdf/LICENSE-*
+vendor/rnnoise/
+__pycache__/
+*.pyc

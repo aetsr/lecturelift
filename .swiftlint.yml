@@ -1,0 +1,8 @@
+# DSP code uses conventional one-letter math names (x, y, n, i, fs) and long formula lines.
+included: [Sources, Tests]
+disabled_rules: [identifier_name, trailing_comma, statement_position, large_tuple]
+line_length: { warning: 160, error: 220 }
+type_body_length: { warning: 400, error: 600 }
+file_length: { warning: 600, error: 900 }
+function_body_length: { warning: 80, error: 150 }
+cyclomatic_complexity: { warning: 15, error: 30 }
