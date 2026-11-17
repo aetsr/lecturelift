@@ -56,7 +56,7 @@ as tendencies, and the large ones (≥ 6 dB) as findings.
 | G | Early-reflections-only room (no long tail), possibly binaural (with D) | Medium: "distance" without the washed-out tail | ≈ 0.1 % | 0 | yes |
 | H | DeepFilterNet3 | Low on this clip: the input is already over-cleaned (SNR 62 dB) | ≈ 9 % | +60 ms | yes |
 
-**My recommendation (pending Fable's review):** A first (biggest measurable gain), then C (live feel),
+**My recommendation at the time:** A first (biggest measurable gain), then C (live feel),
 then D1 as an experiment for headphones (largest potential, needs a listening test), optionally E. Keep
 the reverb tail low or replace it with G. Keep H off by default for already-cleaned recordings.
 

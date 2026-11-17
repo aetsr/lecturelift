@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
+  <title id="t">LectureLift signal chain and fail-safe path</title>
+  <desc id="d">Browser audio is captured by a Core Audio process tap, routed through a private aggregate device into a real-time C IOProc, processed by the chain DeepFilterNet3 (optional), high-pass, EQ, de-esser, leveler, room reverb (optional), limiter, and played on the output device. A watchdog tears the tap down on stalls, which unmutes the browser.</desc>
+  <style>
+    .bg { fill: #ffffff; stroke: #d0d7de; }
+    .box { fill: #f6f8fa; stroke: #8c959f; stroke-width: 1.2; }
+    .opt { fill: #ffffff; stroke: #8c959f; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .grp { fill: #ddf4ff; fill-opacity: .45; stroke: #54aeff; stroke-width: 1.2; }
+    .fail { fill: #fff1e5; stroke: #fb8f44; stroke-width: 1.2; }
+    .out { fill: #dafbe1; stroke: #4ac26b; stroke-width: 1.2; }
+    .h { font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .s { font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #59636e; }
+    .lbl { font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #0969da; letter-spacing: .06em; }
+    .lblf { font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #bc4c00; letter-spacing: .06em; }
+    .a { stroke: #59636e; stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .af { stroke: #bc4c00; stroke-width: 1.6; fill: none; marker-end: url(#arrf); }
+    .ah { fill: #59636e; } .ahf { fill: #bc4c00; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0d1117; stroke: #3d444d; }
+      .box { fill: #151b23; stroke: #656c76; }
+      .opt { fill: #0d1117; stroke: #656c76; }
+      .grp { fill: #0c2d6b; fill-opacity: .35; stroke: #1f6feb; }
+      .fail { fill: #3d1d0b; stroke: #db6d28; }
+      .out { fill: #0f3a1f; stroke: #2ea043; }
+      .h { fill: #f0f6fc; } .s { fill: #9198a1; }
+      .lbl { fill: #4493f8; } .lblf { fill: #f0883e; }
+      .a { stroke: #9198a1; } .ah { fill: #9198a1; }
+      .af { stroke: #f0883e; } .ahf { fill: #f0883e; }
+    }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahf" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="bg" x="0.5" y="0.5" width="999" height="599" rx="12"/>
+
+  <!-- capture -->
+  <text class="lbl" x="30" y="36">CAPTURE · NO VIRTUAL DRIVER</text>
+  <rect class="box" x="30" y="52" width="180" height="60" rx="8"/>
+  <text class="h" x="120" y="78" text-anchor="middle">Browser</text>
+  <text class="s" x="120" y="97" text-anchor="middle">Chrome · Safari · Arc · Firefox</text>
+  <rect class="box" x="262" y="52" width="210" height="60" rx="8"/>
+  <text class="h" x="367" y="78" text-anchor="middle">Core Audio process tap</text>
+  <text class="s" x="367" y="97" text-anchor="middle">private · muted while tapped</text>
+  <rect class="box" x="524" y="52" width="210" height="60" rx="8"/>
+  <text class="h" x="629" y="78" text-anchor="middle">Private aggregate device</text>
+  <text class="s" x="629" y="97" text-anchor="middle">clocked by the output device</text>
+  <rect class="box" x="786" y="52" width="184" height="60" rx="8"/>
+  <text class="h" x="878" y="78" text-anchor="middle">C IOProc</text>
+  <text class="s" x="878" y="97" text-anchor="middle">real-time thread</text>
+  <path class="a" d="M210 82H260"/>
+  <path class="a" d="M472 82H522"/>
+  <path class="a" d="M734 82H784"/>
+  <path class="a" d="M878 112V136H110V198"/>
+
+  <!-- chain -->
+  <rect class="grp" x="30" y="150" width="940" height="160" rx="10"/>
+  <text class="lbl" x="46" y="176">REAL-TIME C/C++ CHAIN · NO ALLOCATION · NO LOCKS</text>
+  <rect class="opt" x="54" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="110" y="226" text-anchor="middle">DeepFilterNet3</text>
+  <text class="s" x="110" y="244" text-anchor="middle">optional · own</text>
+  <text class="s" x="110" y="258" text-anchor="middle">RT thread</text>
+  <rect class="box" x="184" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="240" y="226" text-anchor="middle">High-pass</text>
+  <text class="s" x="240" y="244" text-anchor="middle">80 Hz</text>
+  <rect class="box" x="314" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="370" y="226" text-anchor="middle">EQ</text>
+  <text class="s" x="370" y="244" text-anchor="middle">less boxy,</text>
+  <text class="s" x="370" y="258" text-anchor="middle">more presence</text>
+  <rect class="box" x="444" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="500" y="226" text-anchor="middle">De-esser</text>
+  <text class="s" x="500" y="244" text-anchor="middle">split-band</text>
+  <rect class="box" x="574" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="630" y="226" text-anchor="middle">Leveler</text>
+  <text class="s" x="630" y="244" text-anchor="middle">−18 LUFS</text>
+  <text class="s" x="630" y="258" text-anchor="middle">+ compressor</text>
+  <rect class="opt" x="704" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="760" y="226" text-anchor="middle">Room</text>
+  <text class="s" x="760" y="244" text-anchor="middle">optional</text>
+  <text class="s" x="760" y="258" text-anchor="middle">convolution</text>
+  <rect class="box" x="834" y="200" width="112" height="64" rx="8"/>
+  <text class="h" x="890" y="226" text-anchor="middle">Limiter</text>
+  <text class="s" x="890" y="244" text-anchor="middle">−1 dBFS</text>
+  <path class="a" d="M166 232H182"/>
+  <path class="a" d="M296 232H312"/>
+  <path class="a" d="M426 232H442"/>
+  <path class="a" d="M556 232H572"/>
+  <path class="a" d="M686 232H702"/>
+  <path class="a" d="M816 232H832"/>
+  <text class="s" x="54" y="292">A/B: time-aligned original from a delay line, 20 ms crossfade · dashed = optional</text>
+
+  <!-- output -->
+  <rect class="out" x="738" y="338" width="232" height="60" rx="8"/>
+  <text class="h" x="854" y="364" text-anchor="middle">Output device</text>
+  <text class="s" x="854" y="383" text-anchor="middle">speakers · headphones · AirPods</text>
+  <path class="a" d="M890 264V336"/>
+
+  <!-- fail-safe -->
+  <text class="lblf" x="30" y="440">FAIL-SAFE · NEVER SILENT</text>
+  <rect class="fail" x="30" y="456" width="250" height="60" rx="8"/>
+  <text class="h" x="155" y="482" text-anchor="middle">Watchdog (own queue)</text>
+  <text class="s" x="155" y="501" text-anchor="middle">audio stalls · device change · sleep</text>
+  <rect class="fail" x="330" y="456" width="250" height="60" rx="8"/>
+  <text class="h" x="455" y="482" text-anchor="middle">Tear down tap + aggregate</text>
+  <text class="s" x="455" y="501" text-anchor="middle">processing stops</text>
+  <rect class="out" x="630" y="456" width="340" height="60" rx="8"/>
+  <text class="h" x="800" y="482" text-anchor="middle">Browser unmuted</text>
+  <text class="s" x="800" y="501" text-anchor="middle">original audio plays directly on the output</text>
+  <path class="af" d="M280 486H328"/>
+  <path class="af" d="M580 486H628"/>
+  <text class="s" x="30" y="548">• Until the system-audio permission is confirmed, nothing is muted.</text>
+  <text class="s" x="30" y="568">• If the app crashes or is killed (even kill -9), macOS releases the private tap and the mute with it.</text>
+</svg>

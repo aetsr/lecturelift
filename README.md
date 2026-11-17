@@ -11,8 +11,16 @@ LectureLift is a small macOS menu-bar app that processes the sound of your brows
 lectures (Moodle, Zoom/Teams recordings, any video in the browser). Speech gets clearer and the level
 stays even. Music, calls and every other app stay untouched.
 
-<!-- DEMO: replace with a screenshot or GIF of the menu (see "Recording a demo" below) -->
-<p align="center"><em>Screenshot / GIF coming soon.</em></p>
+<table align="center">
+  <tr>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/menu-dark.png"><img src="docs/images/menu-light.png" width="320" alt="LectureLift menu: on/off switch, Original/LectureLift A/B switch, preset, sliders and meters"></picture></td>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/permission-dark.png"><img src="docs/images/permission-light.png" width="320" alt="LectureLift menu asking for the Screen &amp; System Audio Recording permission"></picture></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Active: A/B switch, preset, sliders, meters</sub></td>
+    <td align="center"><sub>First run: permission prompt (nothing is muted yet)</sub></td>
+  </tr>
+</table>
 
 ## Why
 
@@ -43,6 +51,8 @@ LectureLift improves tonality, level and (optionally) noise. It **cannot restore
 already lost: distance, the room, codec artefacts. Details: [`docs/DIAGNOSIS_CLIP1.md`](docs/DIAGNOSIS_CLIP1.md).
 
 ## Why it's technically interesting
+
+<p align="center"><img src="docs/images/signal-chain.svg" width="1000" alt="Signal chain: browser → Core Audio process tap → private aggregate device → C IOProc → DeepFilterNet3 (optional) → high-pass → EQ → de-esser → leveler → room (optional) → limiter → output device; fail-safe: watchdog → tear down tap → browser unmuted"></p>
 
 - **Per-app capture with Core Audio process taps** (`CATapDescription`, macOS 14.4+). No BlackHole, no kernel or
   driver extension. The original audio of the tapped app is muted while LectureLift plays the processed
@@ -107,12 +117,14 @@ permission survives rebuilds), otherwise ad hoc (macOS then asks again after eve
 
 The UI is German (default) and English (follows the system language).
 
-## Recording a demo
+## Comparing before and after
 
-Record the menu with *⌘⇧5 → Record Selected Portion*, then convert it, for example with
-`ffmpeg -i demo.mov -vf "fps=12,scale=640:-1" demo.gif` (or Gifski). For an audio demo, the menu has
-"60 s Originalton aufnehmen": it saves 60 s of the *unprocessed* input locally. Then render A/B files with
-`scripts/make_listening.sh CLIP.wav OUTDIR`. Only share audio you are allowed to share.
+The A/B switch compares live. For a careful listening test, *Settings → Record 60 s of original audio* saves
+60 s of the unprocessed input to `~/Music/LectureLift Clips` (never uploaded); `scripts/make_listening.sh
+CLIP.wav OUTDIR` then renders loudness-matched versions of every preset with the same chain as the app.
+
+The screenshots in this README are rendered from the real SwiftUI view with test data:
+`LECTURELIFT_DOC_IMAGES=1 swift test --filter DocImages` regenerates them (no audio involved).
 
 ## Known limitations and untested items
 
