@@ -16,6 +16,8 @@ for b in "$BIN"/*.bundle; do [ -e "$b" ] && cp -R "$b" "$APP/Contents/Resources/
 # SwiftUI resolves Text("…") in Bundle.main: copy the compiled string tables (de/en) to the app's
 # own Resources, otherwise only the source language (de) would ever be shown.
 for l in "$BIN"/LectureLift_HSApp.bundle/Contents/Resources/*.lproj "$BIN"/LectureLift_HSApp.bundle/*.lproj; do [ -d "$l" ] && cp -R "$l" "$APP/Contents/Resources/"; done
+# older SwiftPM (Xcode 16) does not compile the catalog: generate the tables ourselves
+ls -d "$APP"/Contents/Resources/en.lproj > /dev/null 2>&1 || python3 -I scripts/xcstrings_to_strings.py Sources/HSApp/Resources/Localizable.xcstrings "$APP/Contents/Resources"
 cp LICENSE THIRD_PARTY_NOTICES.md "$APP/Contents/Resources/"
 [ -f THIRD_PARTY_NOTICES_RUST.md ] && cp THIRD_PARTY_NOTICES_RUST.md "$APP/Contents/Resources/"
 sed -e "s/__VERSION__/$VERSION/" -e "s/__BUILD__/$(date +%Y%m%d%H%M)/" packaging/Info.plist > "$APP/Contents/Info.plist"
