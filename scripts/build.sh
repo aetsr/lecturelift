@@ -5,7 +5,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 CONF=release; [ "${1:-}" = "--debug" ] && CONF=debug
-VERSION=$(git describe --tags --always 2>/dev/null || echo 0.1.0-dev)
+VERSION=$(git describe --tags --always 2>/dev/null || echo 0.1.0-dev); VERSION=${VERSION#v}
 swift build -c "$CONF" --product LectureLift
 swift build -c "$CONF" --product lecturelift-render
 BIN=$(swift build -c "$CONF" --show-bin-path)

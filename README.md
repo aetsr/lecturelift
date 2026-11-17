@@ -77,7 +77,10 @@ The full design and every decision, including independent design reviews, are in
 
 Requirements: **macOS 14.4 or later, Apple Silicon.**
 
-**From a release DMG** (when available): the app is **not notarized**. After dragging it to Applications, open it
+**Download:** [**LectureLift.dmg** (latest release)](https://github.com/aetsr/lecturelift/releases/latest/download/LectureLift.dmg)
+· [all releases](https://github.com/aetsr/lecturelift/releases)
+
+The app is **ad-hoc signed and not notarized**. After dragging it to Applications, open it
 once (macOS blocks it), then go to System Settings → Privacy & Security → **Open Anyway**. On macOS 14,
 *right-click → Open* also works. Alternatively:
 
