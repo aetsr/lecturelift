@@ -27,6 +27,8 @@ git -C "$SRC" checkout -q --force "$COMMIT"
 git -C "$SRC" clean -qfd
 for p in "$OUT"/patches/*.patch; do git -C "$SRC" apply "$(pwd)/$p"; done
 
+# keep local paths (home folder, cargo registry) out of the shipped binary; the last matching prefix wins
+export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$HOME=~ --remap-path-prefix=$(pwd)/$SRC=libdf"
 (cd "$SRC" && cargo "+$TOOLCHAIN" build --locked --release -p deep_filter --features capi --lib --target aarch64-apple-darwin)
 mkdir -p "$OUT/lib" "$OUT/models"
 cp "$SRC/target/aarch64-apple-darwin/release/libdf.dylib" "$OUT/lib/libdf.dylib"
